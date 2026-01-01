@@ -2,6 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+
+<!-- 🔴 MUY IMPORTANTE PARA CELULAR -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Para Ti ❤️</title>
 
 <style>
@@ -12,7 +16,7 @@
   font-family: Arial, sans-serif;
 }
 
-/* 🌌 FONDO ANOCHECER ESTRELLADO */
+/* 🌌 FONDO ANOCHECER CON IMAGEN */
 body {
   height: 100vh;
   background:
@@ -34,6 +38,7 @@ body::before {
     radial-gradient(1px 1px at 70% 70%, white, transparent),
     radial-gradient(1px 1px at 30% 60%, white, transparent);
   opacity: 0.8;
+  pointer-events: none;
 }
 
 /* TEXTO */
@@ -46,9 +51,10 @@ body::before {
   color: white;
   text-shadow: 0 0 10px #ff4d6d;
   z-index: 2;
+  text-align: center;
 }
 
-/* 💌 */
+/* 💌 ICONO */
 .emoji-carta {
   font-size: 4rem;
   position: absolute;
@@ -64,20 +70,21 @@ body::before {
   50% { transform: scale(1.2); }
 }
 
-/* 📩 CARTA PEQUEÑA */
+/* 📩 FONDO OSCURO */
 .carta-pantalla {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.55);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 5;
 }
 
+/* 📜 CARTA */
 .carta-contenido {
   background: linear-gradient(180deg, #fff0f5, #ffe6eb);
-  padding: 30px;
+  padding: 28px;
   width: 90%;
   max-width: 420px;
   border-radius: 20px;
@@ -116,10 +123,13 @@ audio { display:none; }
 </audio>
 
 <div class="mensaje-fondo">Feliz año nuevo vida ❤️</div>
-<div class="emoji-carta" onclick="openCarta()">💌</div>
 
-<div class="carta-pantalla" id="carta" onclick="closeCarta()">
-  <div class="carta-contenido">
+<!-- 💌 -->
+<div class="emoji-carta" onclick="openCarta(event)">💌</div>
+
+<!-- 📩 CARTA -->
+<div class="carta-pantalla" id="carta" onclick="closeCarta(event)">
+  <div class="carta-contenido" onclick="event.stopPropagation()">
     🌻 <strong>Para ti</strong> 🌻<br><br>
     Gracias por iluminar mis días y hacerme tan feliz ❤️<br><br>
     Que este nuevo año nos regale más amor,
@@ -135,19 +145,23 @@ audio { display:none; }
 const music = document.getElementById("music");
 const carta = document.getElementById("carta");
 
+/* 🎵 MÚSICA AL PRIMER TOQUE */
 document.body.addEventListener("click", () => {
   if (music.paused) music.play();
 }, { once:true });
 
-function openCarta() {
+function openCarta(e) {
+  e.stopPropagation(); // 🔴 evita cierre inmediato
   carta.style.display = "flex";
 }
 
-function closeCarta() {
-  carta.style.display = "none";
+function closeCarta(e) {
+  if (e.target.id === "carta") {
+    carta.style.display = "none";
+  }
 }
 
-/* ❤️ FUEGOS DESDE QUE ENTRA */
+/* ❤️ FUEGOS AUTOMÁTICOS */
 setInterval(() => lanzarCorazon(), 650);
 
 function lanzarCorazon() {
